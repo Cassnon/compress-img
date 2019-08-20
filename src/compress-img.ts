@@ -19,13 +19,27 @@ export async function compress_file(file:File, width:number, height:number, type
     data = resize_image(data, {width, height});
   }
   if (info.type === 'image/jpeg') {
-    const buffer = await jpeg_encode(data);
+    const result = await jpeg_encode(data);
     if (type === 'file') {
-      const file = await get_file_from_array_buffer(buffer, info.type, 'test.jpeg');
-      return file;
+      if (result instanceof ArrayBuffer) {
+        const file = await get_file_from_array_buffer(result, info.type, 'test.jpeg');
+        return file;
+      } else {
+        const blob = await imagedata_to_blob(result, info.type);
+        const buffer = await blob_to_arrayBuffer(blob);
+        const file = await get_file_from_array_buffer(buffer, info.type, 'test.jpeg');
+        return file;
+      }
     } else {
-      const base64 = await get_base64_img_from_array_buffer(buffer, info.type);
-      return base64;
+      if (result instanceof ArrayBuffer) {
+        const base64 = await get_base64_img_from_array_buffer(result, info.type);
+        return base64;
+      } else {
+        const blob = await imagedata_to_blob(result, info.type);
+        const buffer = await blob_to_arrayBuffer(blob);
+        const base64 = await get_base64_img_from_array_buffer(buffer, info.type);
+        return base64;
+      }
     }
   }
   if (info.type === 'image/png') {
@@ -50,13 +64,27 @@ export async function compress_base64(str:string, width:number, height:number, t
     data = resize_image(data, {width, height});
   }
   if (info.type === 'image/jpeg') {
-    const buffer = await jpeg_encode(data);
+    const result = await jpeg_encode(data);
     if (type === 'file') {
-      const file = await get_file_from_array_buffer(buffer, info.type, 'test.jpeg');
-      return file;
+      if (result instanceof ArrayBuffer) {
+        const file = await get_file_from_array_buffer(result, info.type, 'test.jpeg');
+        return file;
+      } else {
+        const blob = await imagedata_to_blob(result, info.type);
+        const buffer = await blob_to_arrayBuffer(blob);
+        const file = await get_file_from_array_buffer(buffer, info.type, 'test.jpeg');
+        return file;
+      }
     } else {
-      const base64 = await get_base64_img_from_array_buffer(buffer, info.type);
-      return base64;
+      if (result instanceof ArrayBuffer) {
+        const base64 = await get_base64_img_from_array_buffer(result, info.type);
+        return base64;
+      } else {
+        const blob = await imagedata_to_blob(result, info.type);
+        const buffer = await blob_to_arrayBuffer(blob);
+        const base64 = await get_base64_img_from_array_buffer(buffer, info.type);
+        return base64;
+      }
     }
   }
   if (info.type === 'image/png') {
